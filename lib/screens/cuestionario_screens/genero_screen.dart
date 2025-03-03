@@ -121,11 +121,11 @@ class _GeneroScreenState extends State<GeneroScreen> {
 
   // Navega a la siguiente pantalla
   void _navigateToNextScreen(String tipo) {
-    UserData userData = UserData(metabolismo: tipo);
+    widget.userData.metabolismo = tipo;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ObjetivoPrincipalScreen(userData: userData),
+        builder: (context) => ObjetivoPrincipalScreen(userData: widget.userData),
       ),
     );
   }

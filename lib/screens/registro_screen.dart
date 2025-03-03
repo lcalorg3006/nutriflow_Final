@@ -23,7 +23,7 @@ class NextRegistrationPage extends StatelessWidget {
 }
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -104,13 +104,20 @@ class _RegisterPageState extends State<RegisterPage> {
     // [!] (De lo contrario, tendríamos que controlar si el usuario se ha registrado pero no lo ha completado
     // [!] lo que considero un lío inecesario)
     if (_usernameError == null && _emailError == null && _passwordError == null) {
-      UserData userData = UserData(
-        nombre: _usernameController.text,
-        gmail: _emailController.text,
-      );
+      // Usar los valores correctos desde los controladores
+      String username = _usernameController.text.trim();
+      String email = _emailController.text.trim();
+      String password = _passwordController.text;
+
+      // Crear el objeto UserData con los datos del usuario
+      UserData userData = UserData(nombre: username, email: email, password: password);
+
+      // Navegar a la siguiente pantalla con el objeto userData
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GeneroScreen(userData: userData)),
+        MaterialPageRoute(
+          builder: (context) => GeneroScreen(userData: userData),
+        ),
       );
     }
   }
@@ -334,13 +341,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 GestureDetector(
                   onTap: () {
                     // Navegar a la pantalla de Login (LoginPage)
-                     
-                     Navigator.pushReplacement(
-                       context,
-                       MaterialPageRoute(builder: (context) => const LoginPage()),
-                       // Ahora mismo aquí hay un error porque, cuando se haga merge
-                       // se utilizará el LoginPage correcto. No preocuparse.
-                     );
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                      // Ahora mismo aquí hay un error porque, cuando se haga merge
+                      // se utilizará el LoginPage correcto. No preocuparse.
+                    );
                   },
                   child: Text(
                     'Ya tengo cuenta',

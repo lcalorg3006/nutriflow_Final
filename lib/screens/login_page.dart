@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart'; // Para usar Google Fonts
 import 'package:firebase_auth/firebase_auth.dart'; // Para FirebaseAuth
 import 'package:nutriflow_app/screens/client_management_screen.dart';
 import 'package:nutriflow_app/screens/registro_screen.dart';
+import 'package:nutriflow_app/user_data.dart';
 import 'forgot_password_page.dart';
 import 'normal_screen.dart'; // Navegamos aquí tras un login correcto
 
@@ -193,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                       width: 180,
                       height: 180,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                         boxShadow: [
@@ -201,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.black12,
                             blurRadius: 8,
                             spreadRadius: 2,
-                            offset: const Offset(0, 4),
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -449,7 +450,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const RegisterPage(),
+                              builder: (context) => RegisterPage(),
                             ),
                           );
                         },
