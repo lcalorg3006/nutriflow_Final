@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_fonts/google_fonts.dart'; // Para usar Google Fonts
 import 'package:firebase_auth/firebase_auth.dart'; // Para FirebaseAuth
+import 'package:nutriflow_app/screens/client_management_screen.dart';
+import 'package:nutriflow_app/screens/registro_screen.dart';
 import 'forgot_password_page.dart';
 import 'normal_screen.dart'; // Navegamos aquí tras un login correcto
 
@@ -80,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navegamos a la pantalla normal
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const NormalScreen()),
+        MaterialPageRoute(builder: (context) => const AdministrarClientesScreen()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -447,7 +449,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const NormalScreen(),
+                              builder: (context) => const RegisterPage(),
                             ),
                           );
                         },
