@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutriflow_app/screens/cuestionario_screens/genero_screen.dart';
@@ -94,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   // Al pulsar el botón "Next", validamos todos los campos
-  void _onNextPressed() {
+  void _onNextPressed() async {
     _validateUsername();
     _validateEmail();
     _validatePassword();
@@ -103,14 +104,32 @@ class _RegisterPageState extends State<RegisterPage> {
     // [!] Deberíamos enviar los datos. El usuario solo se subirá tras haber completado el cuestionario
     // [!] (De lo contrario, tendríamos que controlar si el usuario se ha registrado pero no lo ha completado
     // [!] lo que considero un lío inecesario)
-    if (_usernameError == null && _emailError == null && _passwordError == null) {
+    if (_usernameError == null &&
+        _emailError == null &&
+        _passwordError == null) {
       // Usar los valores correctos desde los controladores
       String username = _usernameController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text;
 
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('La contraseña es muy débil.');
+        } else if (e.code == 'email-already-in-use') {
+          print('Ya existe una cuenta asociada a dicho email.');
+        }
+      } catch (e) {
+        print(e);
+      }
+
       // Crear el objeto UserData con los datos del usuario
-      UserData userData = UserData(nombre: username, email: email, password: password);
+      UserData userData =
+          UserData(nombre: username, email: email, password: password);
 
       // Navegar a la siguiente pantalla con el objeto userData
       Navigator.push(
