@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
       // Para la demo, navegamos a NormalScreen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const NormalScreen()),
+        MaterialPageRoute(builder: (context) => const AdministrarClientesScreen()),
       );
     } catch (e) {
       debugPrint('Error al iniciar sesión con Google: $e');
