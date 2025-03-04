@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -152,7 +151,6 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                         child: Text("No hay comidas disponibles"));
                   }
 
-                  // Filtrar los resultados localmente
                   final comidas = snapshot.data!.docs.where((doc) {
                     final comida = doc.data() as Map<String, dynamic>;
                     final nombre = comida['Nombre']?.toString().toLowerCase() ?? '';
@@ -185,7 +183,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                           trailing: IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () {
-                              _showAddQuantityDialog(nombre);
+                              _showAddQuantityDialog(nombre, calorias, grasas, proteinas);
                             },
                           ),
                         ),
@@ -230,7 +228,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     );
   }
 
-  void _showAddQuantityDialog(String foodName) {
+  void _showAddQuantityDialog(String foodName, String calorias, String grasas, String proteinas) {
     String quantity = '';
     String? errorMessage;
 
@@ -272,7 +270,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                         errorMessage = "Ingrese un valor entre 1 y 999";
                       });
                     } else {
-                      await _guardarDietaEnFirestore(foodName, parsedQuantity);
+                      await _guardarDietaEnFirestore(foodName, parsedQuantity, calorias, grasas, proteinas);
                       Navigator.of(context).pop();
                     }
                   },
@@ -290,7 +288,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     );
   }
 
-  Future<void> _guardarDietaEnFirestore(String foodName, int quantity) async {
+  Future<void> _guardarDietaEnFirestore(String foodName, int quantity, String calorias, String grasas, String proteinas) async {
     try {
       CollectionReference dietasRef = FirebaseFirestore.instance
           .collection('clientes')
@@ -301,8 +299,11 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
         'Nombre': foodName,
         'Cantidad': quantity,
         'Fecha': DateFormat('yyyy-MM-dd').format(_selectedDate),
-        'TipoComida': selectedMealNotifier.value, 
-        'timestamp': FieldValue.serverTimestamp(), 
+        'TipoComida': selectedMealNotifier.value,
+        'Calorias': calorias,
+        'Grasas': grasas,    
+        'Proteinas': proteinas, 
+        'timestamp': FieldValue.serverTimestamp(),
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -316,23 +317,23 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     }
   }
 
-void mostrarAgregarAlimentoDialog(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent, 
-    builder: (context) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.transparent, 
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: AgregarAlimentoScreen(),
-      );
-    },
-  );
-}
+  void mostrarAgregarAlimentoDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: AgregarAlimentoScreen(),
+        );
+      },
+    );
+  }
 
   void mostrarEditarAlimentoDialog(BuildContext context) {
     showDialog(

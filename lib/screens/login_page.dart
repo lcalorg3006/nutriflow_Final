@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navegamos a la pantalla normal
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const NormalScreen()),
+        MaterialPageRoute(builder: (context) => const AdministrarClientesScreen()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
       // Para la demo, navegamos a NormalScreen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AdministrarClientesScreen()),
+        MaterialPageRoute(builder: (context) => const NormalScreen()),
       );
     } catch (e) {
       debugPrint('Error al iniciar sesión con Google: $e');
