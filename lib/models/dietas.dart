@@ -19,7 +19,7 @@ class Dieta {
     required this.proteinas,
   });
 
-  factory Dieta.fromFirestore(DocumentSnapshot doc) {
+  factory Dieta.fromFiresBase(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Dieta(
       cantidad: data['Cantidad'] ?? 0,

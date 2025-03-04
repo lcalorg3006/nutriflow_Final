@@ -38,7 +38,7 @@ class FirestoreService {
       "Cena": [],
     };
     for (var documento in queryDietas.docs) {
-      Dieta dieta = Dieta.fromFirestore(documento);
+      Dieta dieta = Dieta.fromFiresBase(documento);
       dietasPorTipo[dieta.tipoComida]?.add(dieta);
     }
 
