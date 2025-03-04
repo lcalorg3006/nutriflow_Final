@@ -192,7 +192,8 @@ class _RestriccionesScreenState extends State<RestriccionesScreen> {
     try {
       await FirebaseFirestore.instance.collection('clientes').add({
         'nombre': userData.nombre,
-        'gmail': userData.gmail,
+        'email': userData.email,
+        'password':userData.password,
         'metabolismo': userData.metabolismo,
         'horasDormir': userData.horasDormir,
         'altura': userData.altura,
@@ -201,7 +202,6 @@ class _RestriccionesScreenState extends State<RestriccionesScreen> {
         'objetivo': userData.objetivo,
         'pesoDeseado': userData.pesoDeseado,
         'restriccionesAlimentarias': userData.restriccionesAlimentarias,
-        'isMetric': userData.isMetric,
       });
       print('Datos subidos correctamente a Firebase');
     } catch (e) {

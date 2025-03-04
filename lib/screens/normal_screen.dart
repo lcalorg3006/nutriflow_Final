@@ -39,7 +39,7 @@ class _NormalScreenState extends State<NormalScreen> {
           double totalCalorias = 0;
           double totalProteinas = 0;
           double totalGrasas = 0;
-          
+
           for (var dietas in dietasPorTipo.values) {
             for (var dieta in dietas) {
               totalCalorias += dieta.calorias;
@@ -80,6 +80,7 @@ class _NormalScreenState extends State<NormalScreen> {
                         )
                       : const SizedBox.shrink();
                 }).toList(),
+
                 const SizedBox(height: 20),
                 PieChartComidas(
                   totalCalorias: totalCalorias,

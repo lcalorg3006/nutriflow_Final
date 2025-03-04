@@ -58,14 +58,18 @@ class AdministrarClientesScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final clienteData = clientes[index].data() as Map<String, dynamic>?;
 
-                final String nombreCliente = clienteData?['Nombre'] ?? 'Sin Nombre';
+                print("Datos del cliente ${index + 1}: $clienteData");
+
+                final String nombreCliente = clienteData != null && clienteData.containsKey('nombre')
+                    ? clienteData['nombre'].toString()
+                    : 'Sin Nombre';
 
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 4,

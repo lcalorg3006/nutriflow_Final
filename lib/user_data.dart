@@ -1,6 +1,7 @@
 class UserData {
   String? nombre;
-  String? gmail;
+  String? email;
+  String? password;
   String? metabolismo;
   String? horasDormir;
   double? altura;
@@ -13,7 +14,8 @@ class UserData {
 
   UserData({
     this.nombre,
-    this.gmail,
+    this.email,
+    this.password,
     this.metabolismo,
     this.horasDormir,
     this.altura,
