@@ -77,9 +77,8 @@ class _NormalScreenState extends State<NormalScreen> {
                               return ComidaCard(dieta: dieta);
                             }).toList(),
                           ],
-                        )
-                      : const SizedBox.shrink();
-                }).toList(),
+                        ) : const SizedBox.shrink();
+                        }).toList(),
 
                 const SizedBox(height: 20),
                 PieChartComidas(
