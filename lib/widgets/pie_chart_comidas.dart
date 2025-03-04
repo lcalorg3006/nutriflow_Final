@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -19,16 +18,16 @@ class PieChartComidas extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "Distribución Nutricional",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          "Distribución Nutricional Total",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         AspectRatio(
-          aspectRatio: 1.3,
+          aspectRatio: 1.2,
           child: PieChart(
             PieChartData(
-              sectionsSpace: 2,
-              centerSpaceRadius: 40,
+              sectionsSpace: 4,
+              centerSpaceRadius: 50,
               borderData: FlBorderData(show: false),
               sections: _mostrarSecciones(),
             ),
@@ -41,11 +40,13 @@ class PieChartComidas extends StatelessWidget {
   }
 
   List<PieChartSectionData> _mostrarSecciones() {
+    final total = totalCalorias + totalProteinas + totalGrasas;
+
     return [
       PieChartSectionData(
         color: Colors.blue,
         value: totalCalorias,
-        title: '${totalCalorias.toInt()} Cal',
+        title: '${((totalCalorias / total) * 100).toStringAsFixed(1)}% Cal',
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 16,
@@ -56,7 +57,7 @@ class PieChartComidas extends StatelessWidget {
       PieChartSectionData(
         color: Colors.red,
         value: totalProteinas,
-        title: '${totalProteinas.toInt()}g Prot',
+        title: '${((totalProteinas / total) * 100).toStringAsFixed(1)}% Prot',
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 16,
@@ -67,7 +68,7 @@ class PieChartComidas extends StatelessWidget {
       PieChartSectionData(
         color: Colors.green,
         value: totalGrasas,
-        title: '${totalGrasas.toInt()}g Grasas',
+        title: '${((totalGrasas / total) * 100).toStringAsFixed(1)}% Grasas',
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 16,
@@ -102,9 +103,19 @@ class _Indicador extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 16, height: 16, color: color),
-        const SizedBox(width: 4),
-        Text(text),
+        Container(
+          width: 16,
+          height: 16,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

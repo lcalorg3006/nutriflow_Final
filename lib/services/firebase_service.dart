@@ -1,29 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nutriflow_app/models/dietas.dart';
 
-FirebaseFirestore db = FirebaseFirestore.instance;
+class FirestoreService {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<List> getComidas() async {
-  List comidas = [];
-  CollectionReference collectionReferenceComidas = db.collection('comidas');
+  Future<Map<String, List<Dieta>>> getDietasPorTipo() async {
+    User? user = _auth.currentUser;
 
+    if (user == null) {
+      return {};
+    }
 
-    QuerySnapshot queryComidas = await collectionReferenceComidas.get();
-    queryComidas.docs.forEach((documento) {
-      final Map<String, dynamic> data = documento.data() as Map<String, dynamic>;
+    String? email = user.email;
+    QuerySnapshot clienteSnapshot = await _db
+        .collection('clientes')
+        .where('email', isEqualTo: email)
+        .get();
 
+    if (clienteSnapshot.docs.isEmpty) {
+      return {};
+    }
 
-      final comida = {
-        "nombre": data['Nombre'],
-        "cantidad": data['Cantidad'],
-        "calorias": data['Calorias'],
-        "grasas": data['Grasas'],
-        "proteinas": data['Proteinas'],
-        "uid_comida": documento.id,
-      };
+    String clienteId = clienteSnapshot.docs.first.id;
+    CollectionReference collectionReferenceDietas = _db
+        .collection('clientes')
+        .doc(clienteId)
+        .collection('dietas');
 
-      comidas.add(comida);
-    });
+    QuerySnapshot queryDietas = await collectionReferenceDietas.get();
+    Map<String, List<Dieta>> dietasPorTipo = {
+      "Desayuno": [],
+      "Aperitivo": [],
+      "Almuerzo": [],
+      "Merienda": [],
+      "Cena": [],
+    };
+    for (var documento in queryDietas.docs) {
+      Dieta dieta = Dieta.fromFirestore(documento);
+      dietasPorTipo[dieta.tipoComida]?.add(dieta);
+    }
 
-  return comidas;
+    return dietasPorTipo;
+  }
 }
-

@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navegamos a la pantalla normal
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AdministrarClientesScreen()),
+        MaterialPageRoute(builder: (context) => const NormalScreen()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
