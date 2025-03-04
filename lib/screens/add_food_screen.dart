@@ -16,7 +16,7 @@ class _AgregarAlimentoScreenState extends State<AgregarAlimentoScreen> {
 
   String? _validarNumero(String? value) {
     if (value == null || value.isEmpty) return 'Campo requerido';
-    final number = double.tryParse(value);
+    final number = int.tryParse(value);
     if (number == null || number < 0 || number > 999) return 'Debe estar entre 0 y 999';
     return null;
   }
@@ -26,9 +26,9 @@ class _AgregarAlimentoScreenState extends State<AgregarAlimentoScreen> {
       try {
         await FirebaseFirestore.instance.collection('comidas').add({
           'Nombre': _nombre,
-          'Grasas': double.parse(_grasas),
-          'Proteinas': double.parse(_proteinas),
-          'Calorias': (double.parse(_calorias)), 
+          'Grasas': int.parse(_grasas),
+          'Proteinas': int.parse(_proteinas), 
+          'Calorias': int.parse(_calorias), 
           'fecha': DateTime.now(),
         });
 
@@ -66,7 +66,7 @@ class _AgregarAlimentoScreenState extends State<AgregarAlimentoScreen> {
                 validator: _validarNumero,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Calorias (g)'),
+                decoration: InputDecoration(labelText: 'Calorías (g)'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) => setState(() => _calorias = value),
                 validator: _validarNumero,

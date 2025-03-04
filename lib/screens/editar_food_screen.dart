@@ -47,14 +47,14 @@ class _EditarAlimentoScreenState extends State<EditarAlimentoScreen> {
       
       final doc = querySnapshot.docs.firstWhere(
         (doc) => doc['Nombre'].toString().trim().toLowerCase() == nombreLimpio,
-     
+      
       );
 
       if (doc != null) {
         await alimentosRef.doc(doc.id).update({
-          'Calorias': int.parse(_calorias),
-          'Grasas': int.parse(_grasas),
-          'Proteinas': int.parse(_proteinas),
+          'Calorias': int.parse(_calorias), 
+          'Grasas': int.parse(_grasas), 
+          'Proteinas': int.parse(_proteinas), 
         });
 
         Navigator.of(context).pop();

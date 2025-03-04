@@ -70,14 +70,13 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
               return DropdownButton<String>(
                 value: selectedMeal,
                 dropdownColor: const Color.fromARGB(255, 92, 136, 92),
-                items:
-                    ['Desayuno', 'Media Mañana', 'Almuerzo', 'Merienda', 'Cena']
-                        .map((value) => DropdownMenuItem(
-                              value: value,
-                              child: Text(value,
-                                  style: const TextStyle(color: Colors.white)),
-                            ))
-                        .toList(),
+                items: ['Desayuno', 'Media Mañana', 'Almuerzo', 'Merienda', 'Cena']
+                    .map((value) => DropdownMenuItem(
+                          value: value,
+                          child: Text(value,
+                              style: const TextStyle(color: Colors.white)),
+                        ))
+                    .toList(),
                 onChanged: (newValue) {
                   if (newValue != null) {
                     selectedMealNotifier.value = newValue;
@@ -126,7 +125,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                 prefixIcon: Icon(Icons.search),
               ),
             ),
-            const SizedBox(height: 10), 
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -147,8 +146,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(
-                        child: Text("No hay comidas disponibles"));
+                    return const Center(child: Text("No hay comidas disponibles"));
                   }
 
                   final comidas = snapshot.data!.docs.where((doc) {
@@ -158,28 +156,23 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                   }).toList();
 
                   if (comidas.isEmpty) {
-                    return const Center(
-                        child: Text("No se encontraron resultados"));
+                    return const Center(child: Text("No se encontraron resultados"));
                   }
 
                   return ListView.builder(
                     itemCount: comidas.length,
                     itemBuilder: (context, index) {
-                      final comida =
-                          comidas[index].data() as Map<String, dynamic>;
+                      final comida = comidas[index].data() as Map<String, dynamic>;
                       final String nombre = comida['Nombre'] ?? 'Sin Nombre';
-                      final String calorias =
-                          comida['Calorias']?.toString() ?? '0';
-                      final String grasas = comida['Grasas']?.toString() ?? '0';
-                      final String proteinas =
-                          comida['Proteinas']?.toString() ?? '0';
+                      final int calorias = int.tryParse(comida['Calorias']?.toString() ?? '0') ?? 0;
+                      final int grasas = int.tryParse(comida['Grasas']?.toString() ?? '0') ?? 0;
+                      final int proteinas = int.tryParse(comida['Proteinas']?.toString() ?? '0') ?? 0;
 
                       return Card(
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         child: ListTile(
                           title: Text(nombre),
-                          subtitle: Text(
-                              '$calorias cal, $grasas g grasas, $proteinas g proteínas'),
+                          subtitle: Text('$calorias cal, $grasas g grasas, $proteinas g proteínas'),
                           trailing: IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () {
@@ -199,8 +192,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     );
   }
 
-  Widget _buildActionButton(
-      String text, String assetPath, VoidCallback onPressed) {
+  Widget _buildActionButton(String text, String assetPath, VoidCallback onPressed) {
     return Expanded(
       child: Container(
         height: 80,
@@ -228,7 +220,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     );
   }
 
-  void _showAddQuantityDialog(String foodName, String calorias, String grasas, String proteinas) {
+  void _showAddQuantityDialog(String foodName, int calorias, int grasas, int proteinas) {
     String quantity = '';
     String? errorMessage;
 
@@ -263,9 +255,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
                   onPressed: () async {
                     int? parsedQuantity = int.tryParse(quantity);
 
-                    if (parsedQuantity == null ||
-                        parsedQuantity < 1 ||
-                        parsedQuantity > 999) {
+                    if (parsedQuantity == null || parsedQuantity < 1 || parsedQuantity > 999) {
                       setState(() {
                         errorMessage = "Ingrese un valor entre 1 y 999";
                       });
@@ -288,7 +278,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
     );
   }
 
-  Future<void> _guardarDietaEnFirestore(String foodName, int quantity, String calorias, String grasas, String proteinas) async {
+  Future<void> _guardarDietaEnFirestore(String foodName, int quantity, int calorias, int grasas, int proteinas) async {
     try {
       CollectionReference dietasRef = FirebaseFirestore.instance
           .collection('clientes')
@@ -300,9 +290,9 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
         'Cantidad': quantity,
         'Fecha': DateFormat('yyyy-MM-dd').format(_selectedDate),
         'TipoComida': selectedMealNotifier.value,
-        'Calorias': calorias,
+        'Calorias': calorias, 
         'Grasas': grasas,    
-        'Proteinas': proteinas, 
+        'Proteinas': proteinas,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
@@ -342,8 +332,7 @@ class _AdministrarDietaScreenState extends State<AdministrarDietaScreen> {
       builder: (context) {
         return Dialog(
           backgroundColor: Colors.transparent,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: EditarAlimentoScreen(),
         );
       },
