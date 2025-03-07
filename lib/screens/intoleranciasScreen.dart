@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriflow_app/services/firebase_service_intolerancias.dart';
 import 'package:nutriflow_app/entities/intolerancias.dart';
 import 'package:nutriflow_app/screens/AgregarIntoleranciaScreen.dart';
-import 'package:nutriflow_app/screens/EliminarIntoleranciaScreen.dart'; 
-
+import 'package:nutriflow_app/screens/EliminarIntoleranciaScreen.dart';
 
 class IntoleranciasScreen extends StatefulWidget {
   @override
@@ -30,12 +29,24 @@ class _IntoleranciasScreenState extends State<IntoleranciasScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Intolerancias')),
+      appBar: AppBar(
+        title: Text('Intolerancias'),
+        backgroundColor: Colors.green, 
+      ),
       body: ListView.builder(
         itemCount: _intolerancias.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_intolerancias[index].nombre),
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.green[200], 
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              _intolerancias[index].nombre,
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
           );
         },
       ),
@@ -50,6 +61,7 @@ class _IntoleranciasScreenState extends State<IntoleranciasScreen> {
             ).then((_) => _loadIntolerancias()),
             child: Icon(Icons.add),
             tooltip: 'Agregar Intolerancia',
+            backgroundColor: Colors.green,
           ),
           SizedBox(height: 10),
           FloatingActionButton(
@@ -60,6 +72,7 @@ class _IntoleranciasScreenState extends State<IntoleranciasScreen> {
             ).then((_) => _loadIntolerancias()),
             child: Icon(Icons.delete),
             tooltip: 'Eliminar Intolerancia',
+            backgroundColor: Colors.red,
           ),
         ],
       ),
